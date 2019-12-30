@@ -58,5 +58,21 @@ namespace DG.MarsRover.Tests
             //Assert
             Assert.That(result, Is.EqualTo(expectedOutput));
         }
+
+        [Test]
+        [TestCase("M", "0:1:N")]
+        [TestCase("MMMM", "0:4:N")]
+        [TestCase("MMMMMMMMM", "0:9:N")]
+        public void MoveCommand_ReturnsGridPosition(string input, string expectedOutput)
+        {
+            //Arrange
+            var rover = new MarsRover();
+
+            //Act
+            var result = rover.Execute(input);
+
+            //Assert
+            Assert.That(result, Is.EqualTo(expectedOutput));
+        }
     }
 }

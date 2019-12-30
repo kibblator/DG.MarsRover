@@ -13,9 +13,14 @@ namespace DG.MarsRover
     public class MarsRover
     {
         private CompassDirection _compassDirection;
+        private int _xPos;
+        private int _yPos;
+
         public MarsRover()
         {
             _compassDirection = CompassDirection.N;
+            _xPos = 0;
+            _yPos = 0;
         }
 
         public string Execute(string commandString)
@@ -23,9 +28,21 @@ namespace DG.MarsRover
             var commands = commandString.Select(c => c.ToString());
             foreach (var command in commands)
             {
-                AlterCompassDirection(command);
+                if (command == "M")
+                {
+                    MoveRover();
+                }
+                else
+                {
+                    AlterCompassDirection(command);
+                }
             }
-            return $"0:0:{_compassDirection}";
+            return $"{_xPos}:{_yPos}:{_compassDirection}";
+        }
+
+        private void MoveRover()
+        {
+            _yPos += 1;
         }
 
         private void AlterCompassDirection(string command)
