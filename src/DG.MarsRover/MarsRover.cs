@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using DG.MarsRover.Entities;
+using DG.MarsRover.Models;
 using DG.MarsRover.Types;
 
 namespace DG.MarsRover
@@ -8,9 +9,14 @@ namespace DG.MarsRover
     {
         private readonly Rover _rover;
 
-        public MarsRover()
+        public MarsRover(Grid grid)
         {
-            _rover = new Rover(CompassDirection.N, 0,0);
+            _rover = new Rover(new RoverState
+            {
+                CompassDirection = CompassDirection.N,
+                XPos = 0,
+                YPos = 0
+            }, grid);
         }
 
         public string Execute(string commandString)
@@ -18,14 +24,7 @@ namespace DG.MarsRover
             var commands = commandString.Select(c => c.ToString());
             foreach (var command in commands)
             {
-                if (command == "M")
-                {
-                    _rover.MoveRover();
-                }
-                else
-                {
-                    _rover.AlterCompassDirection(command);
-                }
+                _rover.Move(command);
             }
             return _rover.GetPosition();
         }

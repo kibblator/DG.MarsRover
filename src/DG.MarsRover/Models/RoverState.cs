@@ -1,6 +1,6 @@
 ﻿using DG.MarsRover.Types;
 
-namespace DG.MarsRover.Entities
+namespace DG.MarsRover.Models
 {
     public class RoverState
     {
