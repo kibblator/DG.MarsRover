@@ -37,5 +37,26 @@ namespace DG.MarsRover.Tests
             //Assert
             Assert.That(result, Is.EqualTo(expectedOutput));
         }
+
+        [Test]
+        [TestCase("LR", "0:0:N")]
+        [TestCase("RL", "0:0:N")]
+        [TestCase("LLR", "0:0:W")]
+        [TestCase("LLLR", "0:0:S")]
+        [TestCase("RRL", "0:0:E")]
+        [TestCase("RRRL", "0:0:S")]
+        [TestCase("RLRLRR", "0:0:S")]
+        [TestCase("LLRLR", "0:0:W")]
+        public void MixedDirectionalCommand_ReturnsCompassDirection(string input, string expectedOutput)
+        {
+            //Arrange
+            var rover = new MarsRover();
+
+            //Act
+            var result = rover.Execute(input);
+
+            //Assert
+            Assert.That(result, Is.EqualTo(expectedOutput));
+        }
     }
 }
