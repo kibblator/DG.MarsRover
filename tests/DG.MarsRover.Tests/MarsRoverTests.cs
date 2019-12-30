@@ -2,17 +2,19 @@ using NUnit.Framework;
 
 namespace DG.MarsRover.Tests
 {
-    public class Tests
+    public class MarsRoverTests
     {
-        [SetUp]
-        public void Setup()
-        {
-        }
-
         [Test]
-        public void Test1()
+        public void NoCommands_ReturnsStartPosition()
         {
-            Assert.Pass();
+            //Arrange
+            var rover = new MarsRover();
+
+            //Act
+            var result = rover.Execute("");
+
+            //Assert
+            Assert.That(result, Is.EqualTo("0:0:N"));
         }
     }
 }
