@@ -14,20 +14,35 @@ namespace DG.MarsRover.Entities
             _grid = grid;
         }
 
-        public void Move(string command)
+        public void IssueCommand(string command)
         {
-            if (command == "R")
+            if (IsTurnRightCommand(command))
             {
                 RotateRight();
             }
-            else if (command == "L")
+            else if (IsTurnLeftCommand(command))
             {
                 RotateLeft();
             }
-            else if (command == "M")
+            else if (IsMoveCommand(command))
             {
                 CheckCompassDirectionAndUpdateMapPosition();
             }
+        }
+
+        private static bool IsTurnRightCommand(string command)
+        {
+            return command == "R";
+        }
+
+        private static bool IsTurnLeftCommand(string command)
+        {
+            return command == "L";
+        }
+
+        private static bool IsMoveCommand(string command)
+        {
+            return command == "M";
         }
 
         private void CheckCompassDirectionAndUpdateMapPosition()

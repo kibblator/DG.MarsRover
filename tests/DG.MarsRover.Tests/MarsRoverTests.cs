@@ -5,19 +5,19 @@ namespace DG.MarsRover.Tests
 {
     public class MarsRoverTests
     {
-        private MarsRover _rover;
+        private MarsRoverController _roverController;
 
         [SetUp]
         public void SetUp()
         {
-            _rover = new MarsRover(new Grid(0, 9, 0, 9));
+            _roverController = new MarsRoverController(new Grid(0, 9, 0, 9));
         }
 
         [Test]
         public void NoCommands_ReturnsStartPosition()
         {
             //Act
-            var result = _rover.Execute("");
+            var result = _roverController.Execute("");
 
             //Assert
             Assert.That(result, Is.EqualTo("0:0:N"));
@@ -35,7 +35,7 @@ namespace DG.MarsRover.Tests
         public void DirectionalCommand_ReturnsCompassDirection(string input, string expectedOutput)
         {
             //Act
-            var result = _rover.Execute(input);
+            var result = _roverController.Execute(input);
 
             //Assert
             Assert.That(result, Is.EqualTo(expectedOutput));
@@ -53,7 +53,7 @@ namespace DG.MarsRover.Tests
         public void MixedDirectionalCommand_ReturnsCompassDirection(string input, string expectedOutput)
         {
             //Act
-            var result = _rover.Execute(input);
+            var result = _roverController.Execute(input);
 
             //Assert
             Assert.That(result, Is.EqualTo(expectedOutput));
@@ -66,7 +66,7 @@ namespace DG.MarsRover.Tests
         public void MoveCommand_ReturnsGridPosition(string input, string expectedOutput)
         {
             //Act
-            var result = _rover.Execute(input);
+            var result = _roverController.Execute(input);
 
             //Assert
             Assert.That(result, Is.EqualTo(expectedOutput));
@@ -79,21 +79,33 @@ namespace DG.MarsRover.Tests
         public void MoveWithDirections_ReturnsGridPosition(string input, string expectedOutput)
         {
             //Act
-            var result = _rover.Execute(input);
+            var result = _roverController.Execute(input);
 
             //Assert
             Assert.That(result, Is.EqualTo(expectedOutput));
         }
 
         [Test]
-        [TestCase("MMMMMMMMMM", "0:0:N")]
         [TestCase("RRM", "0:9:S")]
         [TestCase("RMMMMMMMMMM", "0:0:E")]
         [TestCase("LM", "9:0:W")]
         public void MoveOffEdgeOfMap_ReturnsGridPositionAfterWrapAround(string input, string expectedOutput)
         {
             //Act
-            var result = _rover.Execute(input);
+            var result = _roverController.Execute(input);
+
+            //Assert
+            Assert.That(result, Is.EqualTo(expectedOutput));
+        }
+
+        [Test]
+        [TestCase("MMRMMLM", "2:3:N")]
+        [TestCase("MMMMMMMMMM", "0:0:N")]
+        [TestCase("MMMM", "O:0:2:N", Ignore = "true")]
+        public void ScenarioGivenTestCases_ReturnsExpectedResults(string input, string expectedOutput)
+        {
+            //Act
+            var result = _roverController.Execute(input);
 
             //Assert
             Assert.That(result, Is.EqualTo(expectedOutput));

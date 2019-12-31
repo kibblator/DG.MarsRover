@@ -5,11 +5,11 @@ using DG.MarsRover.Types;
 
 namespace DG.MarsRover
 {
-    public class MarsRover
+    public class MarsRoverController
     {
         private readonly Rover _rover;
 
-        public MarsRover(Grid grid)
+        public MarsRoverController(Grid grid)
         {
             _rover = new Rover(new RoverState
             {
@@ -24,7 +24,7 @@ namespace DG.MarsRover
             var commands = commandString.Select(c => c.ToString());
             foreach (var command in commands)
             {
-                _rover.Move(command);
+                _rover.IssueCommand(command);
             }
             return _rover.GetPosition();
         }
