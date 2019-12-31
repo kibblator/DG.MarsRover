@@ -1,6 +1,4 @@
-using DG.MarsRover.Entities;
 using DG.MarsRover.Models;
-using DG.MarsRover.Types;
 using NUnit.Framework;
 
 namespace DG.MarsRover.Tests
@@ -12,7 +10,7 @@ namespace DG.MarsRover.Tests
         [SetUp]
         public void SetUp()
         {
-            _rover = new MarsRover(new Grid(0, 10));
+            _rover = new MarsRover(new Grid(0, 9, 0, 9));
         }
 
         [Test]
@@ -79,6 +77,20 @@ namespace DG.MarsRover.Tests
         [TestCase("MMRMMM", "3:2:E")]
         [TestCase("MMLLLMMMMR", "4:2:S")]
         public void MoveWithDirections_ReturnsGridPosition(string input, string expectedOutput)
+        {
+            //Act
+            var result = _rover.Execute(input);
+
+            //Assert
+            Assert.That(result, Is.EqualTo(expectedOutput));
+        }
+
+        [Test]
+        [TestCase("MMMMMMMMMM", "0:0:N")]
+        [TestCase("RRM", "0:9:S")]
+        [TestCase("RMMMMMMMMMM", "0:0:E")]
+        [TestCase("LM", "9:0:W")]
+        public void MoveOffEdgeOfMap_ReturnsGridPositionAfterWrapAround(string input, string expectedOutput)
         {
             //Act
             var result = _rover.Execute(input);
