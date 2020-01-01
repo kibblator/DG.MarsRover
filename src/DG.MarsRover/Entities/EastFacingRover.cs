@@ -25,7 +25,12 @@ namespace DG.MarsRover.Entities
 
         public override void MoveForwards()
         {
-            currentX += 1;
+            var proposedNewX = currentX + 1;
+
+            CheckForObstacle(proposedNewX, currentY);
+
+            currentX = proposedNewX;
+
             if (currentX > grid.MaxX)
                 currentX = grid.MinX;
         }

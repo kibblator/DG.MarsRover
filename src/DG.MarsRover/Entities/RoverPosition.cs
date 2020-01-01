@@ -1,4 +1,5 @@
-﻿using DG.MarsRover.Models;
+﻿using DG.MarsRover.Exceptions;
+using DG.MarsRover.Models;
 using DG.MarsRover.Types;
 
 namespace DG.MarsRover.Entities
@@ -38,6 +39,14 @@ namespace DG.MarsRover.Entities
         public string GetCurrentPosition()
         {
             return $"{currentX}:{currentY}:{currentDirection.ToString()}";
+        }
+
+        public void CheckForObstacle(int x, int y)
+        {
+            if (grid.Obstacle != null && x == grid.Obstacle.X && y == grid.Obstacle.Y)
+            {
+                throw new RoverEncounteredObstacleException(GetCurrentPosition());
+            }
         }
 
         public abstract void MoveForwards();

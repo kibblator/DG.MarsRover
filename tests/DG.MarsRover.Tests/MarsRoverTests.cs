@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using DG.MarsRover.Models;
 using NUnit.Framework;
 
@@ -102,12 +101,15 @@ namespace DG.MarsRover.Tests
         [Test]
         [TestCase("MMMM", "0,3", "O:0:2:N")]
         [TestCase("RMMMMLMMMLM", "3,3", "O:4:3:W")]
-        [TestCase("MRMMMMMM", "1,6", "O:5:1:E")]
-        [TestCase("MMMMMMMRMRMMMMMMM", "4,1", "O:1:5:S")]
+        [TestCase("MRMMMMMM", "6,1", "O:5:1:E")]
+        [TestCase("MMMMMMMRMRMMMMMMM", "1,4", "O:1:5:S")]
         public void GivenAnObstacle_RoverStopsAndReportsLastLocation(string input, string obstacleLocation,
             string expectedOutput)
         {
-            //Arrange 
+            //Arrange
+            var obstacle = RoverTestHelper.ConvertCoordinateStringToCoordinate(obstacleLocation);
+            var grid = new Grid(0,10,0,10, obstacle);
+            _roverController = new MarsRoverController(grid);
 
             //Act
             var result = _roverController.Execute(input);

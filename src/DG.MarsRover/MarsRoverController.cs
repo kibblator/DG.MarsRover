@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using DG.MarsRover.Entities;
+using DG.MarsRover.Exceptions;
 using DG.MarsRover.Models;
 
 namespace DG.MarsRover
@@ -18,7 +20,14 @@ namespace DG.MarsRover
             var commands = commandString.Select(c => c.ToString());
             foreach (var command in commands)
             {
-                _rover.IssueCommand(command);
+                try
+                {
+                    _rover.IssueCommand(command);
+                }
+                catch (RoverEncounteredObstacleException ex)
+                {
+                    return ex.CurrentPosition;
+                }
             }
             return _rover.GetCurrentPosition();
         }
