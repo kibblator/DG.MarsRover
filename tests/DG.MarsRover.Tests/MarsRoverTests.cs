@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using DG.MarsRover.Models;
 using NUnit.Framework;
 
@@ -99,9 +100,25 @@ namespace DG.MarsRover.Tests
         }
 
         [Test]
+        [TestCase("MMMM", "0,3", "O:0:2:N")]
+        [TestCase("RMMMMLMMMLM", "3,3", "O:4:3:W")]
+        [TestCase("MRMMMMMM", "1,6", "O:5:1:E")]
+        [TestCase("MMMMMMMRMRMMMMMMM", "4,1", "O:1:5:S")]
+        public void GivenAnObstacle_RoverStopsAndReportsLastLocation(string input, string obstacleLocation,
+            string expectedOutput)
+        {
+            //Arrange 
+
+            //Act
+            var result = _roverController.Execute(input);
+
+            //Assert
+            Assert.That(result, Is.EqualTo(expectedOutput));
+        }
+
+        [Test]
         [TestCase("MMRMMLM", "2:3:N")]
         [TestCase("MMMMMMMMMM", "0:0:N")]
-        [TestCase("MMMM", "O:0:2:N", Ignore = "true")]
         public void ScenarioGivenTestCases_ReturnsExpectedResults(string input, string expectedOutput)
         {
             //Act
