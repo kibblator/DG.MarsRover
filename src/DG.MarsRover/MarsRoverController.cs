@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using DG.MarsRover.Entities;
 using DG.MarsRover.Models;
-using DG.MarsRover.Types;
 
 namespace DG.MarsRover
 {
@@ -11,12 +10,7 @@ namespace DG.MarsRover
 
         public MarsRoverController(Grid grid)
         {
-            _rover = new Rover(new RoverState
-            {
-                CompassDirection = CompassDirection.N,
-                XPos = 0,
-                YPos = 0
-            }, grid);
+            _rover = new Rover(grid);
         }
 
         public string Execute(string commandString)
@@ -26,7 +20,7 @@ namespace DG.MarsRover
             {
                 _rover.IssueCommand(command);
             }
-            return _rover.GetPosition();
+            return _rover.GetCurrentPosition();
         }
     }
 }

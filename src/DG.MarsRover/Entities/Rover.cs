@@ -1,33 +1,29 @@
 ﻿using DG.MarsRover.Models;
-using DG.MarsRover.Types;
 
 namespace DG.MarsRover.Entities
 {
     public class Rover
     {
-        private readonly RoverState _roverState;
-        private readonly Grid _grid;
+        public RoverPosition State { get; set; }
 
-        public Rover(RoverState intialRoverState, Grid grid)
+        public Rover(Grid grid)
         {
-            _roverState = intialRoverState;
-            _grid = grid;
+            State = new NorthFacingRover(grid, 0, 0, this);
         }
 
         public void IssueCommand(string command)
         {
-            if (IsTurnRightCommand(command))
-            {
-                RotateRight();
-            }
-            else if (IsTurnLeftCommand(command))
-            {
-                RotateLeft();
-            }
-            else if (IsMoveCommand(command))
-            {
-                CheckCompassDirectionAndUpdateMapPosition();
-            }
+            if (IsTurnLeftCommand(command))
+                State.TurnLeft();
+            else if (IsTurnRightCommand(command))
+                State.TurnRight();
+            else if (IsMoveCommand(command)) 
+                State.MoveForwards();
+        }
+
+        public string GetCurrentPosition()
+        {
+            return State.GetCurrentPosition();
         }
 
         private static bool IsTurnRightCommand(string command)
@@ -43,96 +39,6 @@ namespace DG.MarsRover.Entities
         private static bool IsMoveCommand(string command)
         {
             return command == "M";
-        }
-
-        private void CheckCompassDirectionAndUpdateMapPosition()
-        {
-            if (_roverState.CompassDirection == CompassDirection.N)
-            {
-                MoveNorthWithWrap();
-            }
-
-            if (_roverState.CompassDirection == CompassDirection.E)
-            {
-                MoveEastWithWrap();
-            }
-
-            if (_roverState.CompassDirection == CompassDirection.S)
-            {
-                MoveSouthWithWrap();
-            }
-
-            if (_roverState.CompassDirection == CompassDirection.W)
-            {
-                MoveWestWithWrap();
-            }
-        }
-
-        private void MoveWestWithWrap()
-        {
-            if (_roverState.XPos == _grid.MinX)
-            {
-                _roverState.XPos = _grid.MaxX;
-            }
-            else
-            {
-                _roverState.XPos -= 1;
-            }
-        }
-
-        private void MoveSouthWithWrap()
-        {
-            if (_roverState.YPos == _grid.MinY)
-            {
-                _roverState.YPos = _grid.MaxY;
-            }
-            else
-            {
-                _roverState.YPos -= 1;
-            }
-        }
-
-        private void MoveEastWithWrap()
-        {
-            if (_roverState.XPos == _grid.MaxX)
-            {
-                _roverState.XPos = _grid.MinX;
-            }
-            else
-            {
-                _roverState.XPos += 1;
-            }
-        }
-
-        private void MoveNorthWithWrap()
-        {
-            if (_roverState.YPos == _grid.MaxY)
-            {
-                _roverState.YPos = _grid.MinY;
-            }
-            else
-            {
-                _roverState.YPos += 1;
-            }
-        }
-
-        private void RotateLeft()
-        {
-            _roverState.CompassDirection -= 1;
-            if ((int) _roverState.CompassDirection == 0)
-                _roverState.CompassDirection = CompassDirection.W;
-        }
-
-        private void RotateRight()
-        {
-            _roverState.CompassDirection += 1;
-            if ((int) _roverState.CompassDirection == 5)
-                _roverState.CompassDirection = CompassDirection.N;
-        }
-
-        public string GetPosition()
-        {
-            return _roverState.ToString();
         }
     }
 }
